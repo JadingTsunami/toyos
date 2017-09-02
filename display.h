@@ -1,6 +1,8 @@
 #ifndef INCLUDE_DISPLAY_H
 #define INCLUDE_DISPLAY_H
 
+#define FB_WIDTH  (80)
+#define FB_HEIGHT (25)
 
 #define FB_BLACK         0
 #define FB_BLUE          1
