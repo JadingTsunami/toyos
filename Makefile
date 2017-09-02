@@ -1,4 +1,4 @@
-OBJECTS = loader.o kmain.o display.o
+OBJECTS = loader.o kmain.o display.o io.o
 CC = /usr/local/i386elfgcc/bin/i386-elf-gcc
 LD = /usr/local/i386elfgcc/bin/i386-elf-ld
 CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
