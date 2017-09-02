@@ -11,6 +11,8 @@ void kmain() {
     fb_write_cell(0,'A',FB_GREEN,FB_BLACK);
     fb_move_cursor(1600);
     write(str,5);
+    set_fg(FB_GREEN);
+    set_bg(FB_DARK_GREY);
     fb_move_cursor(1680);
     write(str,5);
     return;

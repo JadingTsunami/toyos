@@ -37,6 +37,16 @@ int fb_get_cursor_pos() {
     return offset;
 }
 
+void set_fg(unsigned char nfg) {
+    if( nfg <= 0xF )
+        fg = nfg;
+}
+
+void set_bg(unsigned char nbg) {
+    if( nbg <= 0xF )
+        bg = nbg;
+}
+
 void write(char* buf, unsigned int len) {
     unsigned int i = 0;
     for( i = 0; i < len; i++ ) {

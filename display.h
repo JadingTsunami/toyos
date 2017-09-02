@@ -60,6 +60,13 @@ void fb_move_cursor_rc(unsigned short row, unsigned short col);
  */
 int fb_get_cursor_pos();
 
+/** Set default foreground/background color.
+ * Ignores invalid writes/colors.
+ */
+void set_fg(unsigned char nfg);
+void set_bg(unsigned char nbg);
+
+
 /** write:
  *  Starting at the cursor, write a line of output to the screen.
  *
