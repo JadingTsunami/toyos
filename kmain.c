@@ -1,12 +1,19 @@
 #include "display.h"
+#include "string.h"
 
 void kmain() {
     char str[6];
+    char newstr[7];
     str[0] = 'h';
     str[1] = 'e';
     str[2] = 'l';
     str[3] = 'l';
     str[4] = 'o';
+    str[5] = '\0';
+
+    strcpy( newstr, str );
+
+    str[0] = 'm';
 
     fb_write_cell(0,'A',FB_GREEN,FB_BLACK);
     fb_move_cursor(1600);
@@ -14,6 +21,8 @@ void kmain() {
     set_fg(FB_GREEN);
     set_bg(FB_DARK_GREY);
     fb_move_cursor(1680);
-    write(str,5);
+    write(newstr,5);
+    fb_move_cursor(fb_get_cursor_pos()+1);
+    write_str(newstr);
     return;
 }

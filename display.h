@@ -75,4 +75,8 @@ void set_bg(unsigned char nbg);
  */
 void write(char* buf, unsigned int len);
 
+/** write a null-terminated string
+ */
+void write_str(char* buf);
+
 #endif /* INCLUDE_DISPLAY_H */

@@ -1,3 +1,4 @@
+#include "string.h"
 #include "display.h"
 #include "io.h"
 
@@ -53,4 +54,8 @@ void write(char* buf, unsigned int len) {
         fb_write_cell(2*(cursor_pos+i),buf[i],fg,bg);
     }
     fb_move_cursor(cursor_pos+len);
+}
+
+void write_str(char* buf) {
+    write( buf, strlen(buf) );
 }
