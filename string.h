@@ -9,4 +9,7 @@ unsigned int strlen( char* str );
 
 void strcpy( char* dst, char* src );
 
+void memcpy(void* dst, void* src, unsigned int len);
+
+
 #endif /* INCLUDE_STRING_H */

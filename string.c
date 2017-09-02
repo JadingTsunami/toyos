@@ -20,3 +20,12 @@ void strcpy( char* dst, char* src ) {
     dst[i] = '\0';
 }
 
+void memcpy(void* dst, void* src, unsigned int len) {
+    char *csrc = (char*) src;
+    char *cdst = (char*) dst;
+
+    for( unsigned int i = 0; i < len; i++ ) {
+        cdst[i] = csrc[i];
+    }
+}
+
