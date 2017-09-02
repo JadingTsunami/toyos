@@ -45,4 +45,27 @@ void fb_write_cell(unsigned int i, char c, unsigned char fg, unsigned char bg);
  */
 void fb_move_cursor(unsigned short pos);
 
+/** fb_move_cursor:
+ *  Moves the cursor of the framebuffer to the given position
+ *
+ *  @param row The row to move the cursor to.
+ *  @param col The column to move the cursor to.
+ */
+void fb_move_cursor_rc(unsigned short row, unsigned short col);
+
+
+/** fb_get_cursor_pos:
+ *  Return cursor position. You must divide by 80 to get the row and modulo 80
+ *  to get the column.
+ */
+int fb_get_cursor_pos();
+
+/** write:
+ *  Starting at the cursor, write a line of output to the screen.
+ *
+ *  @param buf The string to write.
+ *  @param len The length of the string.
+ */
+void write(char* buf, unsigned int len);
+
 #endif /* INCLUDE_DISPLAY_H */
