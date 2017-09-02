@@ -1,5 +1,6 @@
+#include "display.h"
+
 void kmain() {
-    int foof = 0xdeadbabe;
-    foof++;
+    fb_write_cell(0,'A',FB_GREEN,FB_DARK_GREY);
     return;
 }
