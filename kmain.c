@@ -1,6 +1,7 @@
 #include "display.h"
 #include "string.h"
 #include "io.h"
+#include "serial.h"
 
 void kmain() {
     char str[6];
@@ -38,19 +39,26 @@ void kmain() {
     newstr[6] = 'o';
     newstr[7] = '\0';
 
+    serial_initialize(SERIAL_COM1_BASE);
+    serial_write(newstr,strlen(newstr));
     write_str(newstr);
 
-    newstr[0] = '0';
+    newstr[0] = '\n';
     newstr[1] = '\0';
 
+    write_str(newstr);
+
     fb_move_cursor_rc( FB_HEIGHT, FB_WIDTH-3 );
-    for( int i = 0; i < 2*FB_WIDTH*FB_HEIGHT; i++ ) {
+    /* for( int i = 0; i < 2*FB_WIDTH*FB_HEIGHT; i++ ) { */
+    for( int i = 0; i < 160; i++ ) {
         newstr[0] = (char) ((i / FB_WIDTH) + 0x30);
         write( newstr, 1 );
+        serial_write(newstr, 1);
         /* hacky delay loop */
         for( int j = 0; j < 50000; j++ ) {
             inb(0x80);
         }
     }
+
     return;
 }
