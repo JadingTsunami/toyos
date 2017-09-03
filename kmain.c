@@ -42,12 +42,15 @@ void kmain() {
 
     write_str(newstr);
 
-    fb_move_cursor_rc( FB_HEIGHT, 0 );
+    fb_move_cursor_rc( 0, 0 );
     /* for( int i = 0; i < 2*FB_WIDTH*FB_HEIGHT; i++ ) { */
-    for( int i = 0; i < 160; i++ ) {
-        newstr[0] = (char) ((i / FB_WIDTH) + 0x30);
-        write( newstr, 1 );
-        serial_write(newstr, 1);
+    for( int i = 0; i < FB_HEIGHT; i++ ) {
+        newstr[0] = (i/10) + 0x30;
+        newstr[1] = (i%10) + 0x30;
+        newstr[2] = '\n';
+        newstr[3] = '\0';
+
+        write( newstr, 4 );
     }
 
     return;

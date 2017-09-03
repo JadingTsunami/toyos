@@ -19,8 +19,8 @@ void fb_move_cursor(unsigned short pos) {
     /* bounds checking -- if we go past the end of the
      * screen, wrap back
      */
-    if ( pos > (FB_WIDTH + (FB_HEIGHT*80)) ) {
-        pos = pos % (FB_WIDTH+(FB_HEIGHT*80));
+    if ( pos > (FB_WIDTH + (FB_HEIGHT*FB_WIDTH)) ) {
+        pos = pos % (FB_WIDTH+(FB_HEIGHT*FB_WIDTH));
     }
     outb(FB_COMMAND_PORT, FB_HIGH_BYTE_COMMAND);
     outb(FB_DATA_PORT,    ((pos >> 8) & 0x00FF));
@@ -31,7 +31,7 @@ void fb_move_cursor(unsigned short pos) {
 
 
 void fb_move_cursor_rc(unsigned short row, unsigned short col) {
-    unsigned short position = (row*80) + col;
+    unsigned short position = (row*FB_WIDTH) + col;
     fb_move_cursor(position);
 }
 
@@ -69,18 +69,18 @@ void write(char* buf, unsigned int len) {
             row++;
         }
 
-        if( row > FB_HEIGHT ) {
+        if( row >= FB_HEIGHT ) {
             col = 0;
-            row = FB_HEIGHT;
+            row = FB_HEIGHT-1;
             /* move screen lines up 1 */
-            for( int j = 1; j <= FB_HEIGHT; j++ ) {
+            for( int j = 1; j < FB_HEIGHT; j++ ) {
                 memcpy( (void*)&(fb[2*(j-1)*FB_WIDTH]), (void*)&(fb[2*j*FB_WIDTH]), 2*FB_WIDTH );
             }
 
             /* clear last row */
             for( int j = 0; j < FB_WIDTH; j++ ) {
-                fb[2*(FB_WIDTH*(FB_HEIGHT) + j)    ] = (char) ' ';
-                fb[2*(FB_WIDTH*(FB_HEIGHT) + j) + 1] = (char) '\0';
+                fb[2*(FB_WIDTH*(FB_HEIGHT-1) + j)    ] = (char) ' ';
+                fb[2*(FB_WIDTH*(FB_HEIGHT-1) + j) + 1] = (char) '\0';
             }
         }
 
