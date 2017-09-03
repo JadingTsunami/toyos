@@ -1,4 +1,5 @@
 #include "serial.h"
+#include "string.h"
 
 void serial_configure_baud_rate(unsigned short com, unsigned short divisor) {
     outb(SERIAL_LINE_COMMAND_PORT(com),
@@ -53,3 +54,8 @@ void serial_write(char* buf, unsigned int len) {
         outb( SERIAL_DATA_PORT(SERIAL_COM1_BASE), buf[i] );
     }
 }
+
+void serial_write_str(char* buf) {
+    serial_write( buf, strlen(buf) );
+}
+

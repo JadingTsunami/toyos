@@ -66,4 +66,6 @@ void serial_initialize(unsigned short com);
 
 void serial_write(char* buf, unsigned int len);
 
+void serial_write_str(char* buf);
+
 #endif /* INCLUDE_SERIAL_H */

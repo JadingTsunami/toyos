@@ -1,4 +1,4 @@
-OBJECTS = loader.o kmain.o display.o io.o string.o serial.o
+OBJECTS = loader.o kmain.o display.o io.o string.o serial.o debug.o
 CC = /usr/local/i386elfgcc/bin/i386-elf-gcc
 LD = /usr/local/i386elfgcc/bin/i386-elf-ld
 CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
@@ -26,7 +26,7 @@ os.iso: kernel.elf
           iso
 
 run: os.iso
-	bochs -f bochsrc.txt -q
+	bochs -f bochsrc.txt -q -rc bochscmd.txt
 
 %.o: %.c
 	$(CC) $(CFLAGS)  $< -o $@
