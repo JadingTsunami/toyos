@@ -2,6 +2,10 @@
 #include "serial.h"
 #include "string.h"
 
+void log( char* buf ) {
+    serial_debug_print( SEVERITY_DEBUG, buf );
+}
+
 void serial_debug_print(unsigned int severity, char* buf ) {
 
     char sevstr[SEVERITY_LEN];

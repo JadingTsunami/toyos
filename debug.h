@@ -15,6 +15,8 @@
 #define INFOR_STR "INFOR: "
 #define DEBUG_STR "DEBUG: "
 
+void log( char* buf );
+
 void serial_debug_print(unsigned int severity, char* buf );
 
 #endif  /*               INCLUDE_DEBUG_H */

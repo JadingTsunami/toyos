@@ -50,8 +50,17 @@ void kmain() {
         newstr[2] = '\n';
         newstr[3] = '\0';
 
-        write( newstr, 4 );
+        write_str( newstr );
+        serial_write_str( newstr );
     }
 
+    write_str( int_to_str( newstr, 123 ) );
+    write_str( "stop 1\nstart 2 " );
+    write_str( int_to_str( newstr, -123 ) );
+    write_str( "stop 2\nstart 3 " );
+    write_str( int_to_str( newstr, 0 ) );
+    write_str( "stop 3\nstart 4 " );
+    write_str( uint_to_str( newstr, 0xdead ) );
+    write_str( "stop 4\nstart 5 " );
     return;
 }

@@ -29,3 +29,32 @@ void memcpy(void* dst, void* src, unsigned int len) {
     }
 }
 
+
+char* int_to_str( char* buf, int i ) {
+    if( buf == 0 ) return 0;
+    char* ret = buf;
+    if( i < 0 ) {
+        *buf++ = '-';
+        i = -i;
+    }
+    uint_to_str( buf, i );
+    return ret;
+}
+
+char* uint_to_str( char* buf, unsigned int i ) {
+    if( buf == 0 ) return 0;
+    if( i == 0 ) {
+        buf[0] = '0';
+        buf[1] = '\0';
+        return buf;
+    }
+    unsigned int pos = 0;
+    for( pos = i; pos > 0; pos /= 10 ) {
+        buf++;
+    }
+    *buf = '\0';
+    for( pos = i; pos > 0; pos /= 10 ) {
+        *--buf = (pos%10) + 0x30;
+    }
+    return buf;
+}
