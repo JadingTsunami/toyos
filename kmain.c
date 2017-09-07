@@ -3,10 +3,13 @@
 #include "io.h"
 #include "serial.h"
 #include "debug.h"
+#include "cpu.h"
 
 void kmain() {
     char str[6];
     char newstr[10];
+
+    gdt_init();
 
     strcpy( str, "hello" );
     strcpy( newstr, str );
@@ -54,7 +57,7 @@ void kmain() {
         serial_write_str( newstr );
     }
 
-    write_str( int_to_str( newstr, 123 ) );
+    write_str( int_to_str( newstr, sizeof(unsigned char) ) );
     write_str( "stop 1\nstart 2 " );
     write_str( int_to_str( newstr, -123 ) );
     write_str( "stop 2\nstart 3 " );
