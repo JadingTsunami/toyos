@@ -4,12 +4,14 @@
 #include "serial.h"
 #include "debug.h"
 #include "cpu.h"
+#include "interrupts.h"
 
 void kmain() {
     char str[6];
     char newstr[10];
 
     gdt_init();
+    idt_init();
 
     strcpy( str, "hello" );
     strcpy( newstr, str );

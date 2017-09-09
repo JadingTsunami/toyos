@@ -6,6 +6,9 @@
 #define GDT_SEGMENT_BASE  (0)
 #define GDT_SEGMENT_LIMIT (0xFFFFF)
 
+#define CODE_SEGMENT (0x08)
+#define DATA_SEGMENT (0x10)
+
 struct gdt {
     unsigned short size;
     unsigned int address;
