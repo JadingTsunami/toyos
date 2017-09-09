@@ -29,8 +29,6 @@ load_idt:
 
 
 common_interrupt_handler:
-    push    esp
-    add     DWORD [esp], 8
 	push	eax
 	push	ebx
 	push	ecx
@@ -50,7 +48,8 @@ common_interrupt_handler:
 	pop	    ecx
 	pop	    ebx
 	pop	    eax
-	pop     esp
+
+    add     esp, 8
 	iret
 
 

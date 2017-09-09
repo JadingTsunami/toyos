@@ -26,10 +26,10 @@ void pic_acknowledge(unsigned int interrupt) {
       return;
     }
 
-    if (interrupt < PIC2_START_INTERRUPT) {
-      outb(PIC1_PORT_A, PIC_ACK);
-    } else {
+    if (interrupt >= PIC2_START_INTERRUPT) {
       outb(PIC2_PORT_A, PIC_ACK);
     }
+
+    outb(PIC1_PORT_A, PIC_ACK);
 }
 

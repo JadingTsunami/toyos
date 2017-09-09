@@ -5,6 +5,7 @@
 #include "debug.h"
 #include "cpu.h"
 #include "interrupts.h"
+#include "pic.h"
 
 void kmain() {
     char str[6];
@@ -12,6 +13,9 @@ void kmain() {
 
     gdt_init();
     idt_init();
+    pic_init();
+    enable_interrupts();
+    serial_initialize(SERIAL_COM1_BASE);
 
     strcpy( str, "hello" );
     strcpy( newstr, str );
@@ -33,7 +37,6 @@ void kmain() {
     set_bg(FB_LIGHT_GREY);
     strcpy( newstr, "foo\nmoo\n" );
 
-    serial_initialize(SERIAL_COM1_BASE);
     serial_write(newstr,strlen(newstr));
     serial_write(newstr,strlen(newstr));
     write_str(newstr);
@@ -67,5 +70,6 @@ void kmain() {
     write_str( "stop 3\nstart 4 " );
     write_str( uint_to_str( newstr, 0xdead ) );
     write_str( "stop 4\nstart 5 " );
+    serial_write_str( "stop 4\nstart 5 " );
     return;
 }

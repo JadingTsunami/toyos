@@ -1,5 +1,8 @@
 #include "interrupts.h"
 #include "cpu.h"
+#include "string.h"
+#include "debug.h"
+#include "display.h"
 
 idt_descriptor_t idt_descriptors[NUM_IDT_ENTRIES];
 idt_t final_idt;
@@ -16,15 +19,45 @@ void interrupt_install_descriptor( unsigned int index, unsigned int address ) {
 }
 
 void idt_init() {
+
+    /* install hardware interrupt handlers */
+    /* FIXME: Would be better not to resort to absolute numbers here... */
+    interrupt_install_descriptor( TIMER_INTERRUPT_OFFSET, (unsigned int) interrupt_handler_32 );
+    interrupt_install_descriptor( KEYBOARD_INTERRUPT_OFFSET, (unsigned int) interrupt_handler_33 );
+
     final_idt.address = (unsigned int) &idt_descriptors;
     final_idt.size    = sizeof(idt_descriptor_t)*NUM_IDT_ENTRIES;
-    load_idt( (unsigned int) &final_idt );
+    load_idt( final_idt );
 }
 
 void interrupt_handler(struct cpu_state cpu, unsigned int interrupt, struct stack_state stack) {
     /* for now, do nothing */
     /* dummy instructions so compiler doesn't complain */
     cpu.eax = cpu.eax;
-    interrupt = interrupt;
     stack.eip = stack.eip;
+    char buf[6];
+
+    switch( interrupt ) {
+        case 0x20:
+            pic_acknowledge(interrupt);
+            break;
+        case 0x21:
+            buf[0] = '!';
+            buf[1] = '\0';
+            write_str(buf);
+            pic_acknowledge(interrupt);
+            break;
+        default:
+            log("Spurious interrupt. Number:");
+            log(uint_to_str(buf, interrupt));
+            pic_acknowledge(interrupt);
+            break;
+    }
+}
+
+void enable_interrupts() {
+    asm("sti");
+}
+void disable_interrupts() {
+    asm("cli");
 }
