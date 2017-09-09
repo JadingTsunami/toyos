@@ -2,7 +2,7 @@
 #include "cpu.h"
 #include "string.h"
 #include "debug.h"
-#include "display.h"
+#include "keyboard.h"
 
 idt_descriptor_t idt_descriptors[NUM_IDT_ENTRIES];
 idt_t final_idt;
@@ -42,9 +42,7 @@ void interrupt_handler(struct cpu_state cpu, unsigned int interrupt, struct stac
             pic_acknowledge(interrupt);
             break;
         case 0x21:
-            buf[0] = '!';
-            buf[1] = '\0';
-            write_str(buf);
+            keyboard_handle_interrupt();
             pic_acknowledge(interrupt);
             break;
         default:
