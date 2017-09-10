@@ -6,17 +6,38 @@
 #include "cpu.h"
 #include "interrupts.h"
 #include "pic.h"
+#include "multiboot.h"
 
-void kmain() {
+typedef void (*call_module_t)(void);
+
+void kmain( multiboot_info_t *mbinfo ) {
     char str[6];
     char newstr[10];
 
+    /* early init code */
     gdt_init();
     idt_init();
     pic_init();
     enable_interrupts();
     serial_initialize(SERIAL_COM1_BASE);
 
+    /* check module integrity */
+    if( mbinfo->mods_count != 1 ) {
+        write_str( "Bad module loaded!\n" );
+        write_str( "Mods count: " );
+        write_str( uint_to_str( str, mbinfo->mods_count ) );
+    } else {
+        write_str( "Module loaded!\n" );
+        unsigned int program_address = ((module_t*) mbinfo->mods_addr)->mod_start;
+        write_str( uint_to_str( newstr, mbinfo->flags ) );
+        write_str( "!\n" );
+        write_str( uint_to_str( newstr, mbinfo->mods_count ) );
+        write_str( "!\n" );
+        write_str( uint_to_str( newstr, program_address) );
+        write_str( "!\n" );
+        call_module_t start_program = (call_module_t) program_address;
+        start_program();
+    }
     strcpy( str, "hello" );
     strcpy( newstr, str );
 
@@ -41,35 +62,5 @@ void kmain() {
     serial_write(newstr,strlen(newstr));
     write_str(newstr);
 
-    serial_debug_print( SEVERITY_FATAL, "Fatal message.\n" );
-    serial_debug_print( SEVERITY_DEBUG, "Debug message.\n" );
-    serial_debug_print( SEVERITY_INFOR, "Information message.\n" );
-
-    newstr[0] = '\n';
-    newstr[1] = '\0';
-
-    write_str(newstr);
-
-    fb_move_cursor_rc( 0, 0 );
-    /* for( int i = 0; i < 2*FB_WIDTH*FB_HEIGHT; i++ ) { */
-    for( int i = 0; i < FB_HEIGHT; i++ ) {
-        newstr[0] = (i/10) + 0x30;
-        newstr[1] = (i%10) + 0x30;
-        newstr[2] = '\n';
-        newstr[3] = '\0';
-
-        write_str( newstr );
-        serial_write_str( newstr );
-    }
-
-    write_str( int_to_str( newstr, sizeof(unsigned char) ) );
-    write_str( "stop 1\nstart 2 " );
-    write_str( int_to_str( newstr, -123 ) );
-    write_str( "stop 2\nstart 3 " );
-    write_str( int_to_str( newstr, 0 ) );
-    write_str( "stop 3\nstart 4 " );
-    write_str( uint_to_str( newstr, 0xdead ) );
-    write_str( "stop 4\nstart 5 " );
-    serial_write_str( "stop 4\nstart 5 " );
     return;
 }
