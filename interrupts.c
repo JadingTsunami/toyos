@@ -2,6 +2,7 @@
 #include "cpu.h"
 #include "string.h"
 #include "debug.h"
+#include "serial.h"
 #include "keyboard.h"
 
 idt_descriptor_t idt_descriptors[NUM_IDT_ENTRIES];
@@ -30,15 +31,21 @@ void idt_init() {
     load_idt( final_idt );
 }
 
+unsigned int ticks = 0;
+
 void interrupt_handler(struct cpu_state cpu, unsigned int interrupt, struct stack_state stack) {
     /* for now, do nothing */
     /* dummy instructions so compiler doesn't complain */
     cpu.eax = cpu.eax;
     stack.eip = stack.eip;
-    char buf[6];
+    char buf[32];
 
     switch( interrupt ) {
         case 0x20:
+            ticks++;
+            serial_write_str( "Timer interrupt; ticks: " );
+            serial_write_str( uint_to_str( buf, ticks ) );
+            serial_write_str ("\n" );
             pic_acknowledge(interrupt);
             break;
         case 0x21:
