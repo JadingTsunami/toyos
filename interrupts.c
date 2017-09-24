@@ -4,6 +4,7 @@
 #include "debug.h"
 #include "serial.h"
 #include "keyboard.h"
+#include "paging.h"
 
 idt_descriptor_t idt_descriptors[NUM_IDT_ENTRIES];
 idt_t final_idt;
@@ -25,6 +26,7 @@ void idt_init() {
     /* FIXME: Would be better not to resort to absolute numbers here... */
     interrupt_install_descriptor( TIMER_INTERRUPT_OFFSET, (unsigned int) interrupt_handler_32 );
     interrupt_install_descriptor( KEYBOARD_INTERRUPT_OFFSET, (unsigned int) interrupt_handler_33 );
+    interrupt_install_descriptor( PAGING_INTERRUPT_OFFSET, (unsigned int) interrupt_handler_14 );
 
     final_idt.address = (unsigned int) &idt_descriptors;
     final_idt.size    = sizeof(idt_descriptor_t)*NUM_IDT_ENTRIES;
@@ -51,6 +53,9 @@ void interrupt_handler(struct cpu_state cpu, unsigned int interrupt, struct stac
         case 0x21:
             keyboard_handle_interrupt();
             pic_acknowledge(interrupt);
+            break;
+        case PAGING_INTERRUPT_OFFSET:
+            page_fault();
             break;
         default:
             log("Spurious interrupt. Number:");

@@ -7,6 +7,7 @@
 #include "interrupts.h"
 #include "pic.h"
 #include "multiboot.h"
+#include "paging.h"
 
 typedef void (*call_module_t)(void);
 
@@ -20,6 +21,9 @@ void kmain( multiboot_info_t *mbinfo ) {
     pic_init();
     enable_interrupts();
     serial_initialize(SERIAL_COM1_BASE);
+    serial_write_str( "Paging processing starting...\n" );
+    init_identity_paging();
+    serial_write_str( "Paging enabled.\n" );
 
     /* check module integrity */
     if( mbinfo->mods_count != 1 ) {

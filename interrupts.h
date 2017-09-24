@@ -8,6 +8,9 @@
 #define TIMER_INTERRUPT_OFFSET (PIC1_START_INTERRUPT)
 #define KEYBOARD_INTERRUPT_OFFSET (PIC1_START_INTERRUPT+1)
 
+#define PAGING_INTERRUPT_OFFSET 14
+
+
 struct idt {
 	unsigned short size;
 	unsigned int address;
@@ -49,6 +52,7 @@ void interrupt_handler(struct cpu_state cpu, unsigned int interrupt, struct stac
 void load_idt(idt_t);
 void interrupt_handler_32();
 void interrupt_handler_33();
+void interrupt_handler_14();
 
 void interrupt_install_descriptor( unsigned int index, unsigned int address );
 void idt_init();
