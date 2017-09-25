@@ -22,9 +22,10 @@ void kmain( multiboot_info_t *mbinfo ) {
     enable_interrupts();
     serial_initialize(SERIAL_COM1_BASE);
     serial_write_str( "Paging processing starting...\n" );
-    init_identity_paging();
+    /*init_identity_paging();*/
     serial_write_str( "Paging enabled.\n" );
 
+    mbinfo = (multiboot_info_t *) mbinfo + 0xC0000000;
     /* check module integrity */
     if( mbinfo->mods_count != 1 ) {
         write_str( "Bad module loaded!\n" );

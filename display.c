@@ -3,7 +3,7 @@
 #include "io.h"
 
 /* framebuffer location */
-char *fb = (char *) 0x000B8000;
+char *fb = (char *) 0xC00B8000;
 
 /* track cursor position internally to avoid excessive port reads */
 unsigned int cursor_pos = 0;
